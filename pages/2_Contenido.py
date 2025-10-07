@@ -30,39 +30,15 @@ titles = ["Cuadro 1", "Cuadro 2", "Cuadro 3", "Cuadro 4"]
 
 cols = st.columns(4, gap="large")
 
-# Mapa: botón -> página destino
-page_map = {
-    1: "pages/3_Cuadro1.py",
-    2: "pages/4_Cuadro2.py",
-    3: "pages/5_Cuadro3.py",
-    4: "pages/6_Cuadro4.py",
-}
-
-KEY_PREFIX = "cards_v2"  # <- prefijo único para evitar claves duplicadas
-
-for i, col in enumerate(cols, start=1):
-    with col:
-        st.markdown(f"<div id='card{i}'>", unsafe_allow_html=True)
-        btn_key = f"{KEY_PREFIX}_{i}"  # <- clave única por botón
-        clicked = st.button(f"{i} · {titles[i-1]}", key=btn_key, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-
-        if clicked:
-            st.session_state.selected_card = i
-            st.toast(f"Has presionado el botón {i}: {titles[i-1]}")
-            try:
-                st.switch_page(page_map[i])
-            except Exception:
-                st.info("No pude navegar automáticamente. Abre la página desde el menú lateral.")
-
-
-# CSS para estilizar SOLO estos 4 botones, usando wrappers con id único
+# =========================
+#  CUADROS → BOTONES (ÚNICO BLOQUE)
+# =========================
 st.markdown("""
 <style>
 :root { --card-h: 140px; }
 
 /* Estilo base para los 4 botones dentro de sus wrappers #card1..#card4 */
-#card1 .stButton>button { background-color: #ffaaaa !important; border: 3px dashed #000 !important; },
+#card1 .stButton>button,
 #card2 .stButton>button,
 #card3 .stButton>button,
 #card4 .stButton>button {
@@ -101,26 +77,36 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+colors = ["#FDE68A", "#A7F3D0", "#BFDBFE", "#FBCFE8"]  # pastel
+titles = ["Cuadro 1", "Cuadro 2", "Cuadro 3", "Cuadro 4"]
+cols = st.columns(4, gap="large")
 
-if "selected_card" not in st.session_state:
-    st.session_state.selected_card = None
+# Mapa: botón -> página destino
+page_map = {
+    1: "pages/3_Cuadro1.py",
+    2: "pages/4_Cuadro2.py",
+    3: "pages/5_Cuadro3.py",
+    4: "pages/6_Cuadro4.py",
+}
+
+KEY_PREFIX = "cards_v3"  # prefijo único para las keys
 
 for i, col in enumerate(cols, start=1):
     with col:
         st.markdown(f"<div id='card{i}'>", unsafe_allow_html=True)
-        clicked = st.button(f"{i} · {titles[i-1]}", key=f"card_btn_{i}", use_container_width=True)
+        clicked = st.button(f"{i} · {titles[i-1]}", key=f"{KEY_PREFIX}_{i}", use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
         if clicked:
             st.session_state.selected_card = i
             st.toast(f"Has presionado el botón {i}: {titles[i-1]}")
-
-            # try:
-            #     st.switch_page(f"pages/{i+2}_Subpagina{i}.py")
-            # except Exception:
-            #     pass
+            try:
+                st.switch_page(page_map[i])
+            except Exception:
+                st.info("No pude navegar automáticamente. Abre la página desde el menú lateral.")
 
 st.divider()
+
 
 # =========================
 #  CONTADOR REGRESIVO
