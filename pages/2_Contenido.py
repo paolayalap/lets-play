@@ -38,10 +38,13 @@ page_map = {
     4: "pages/6_Cuadro4.py",
 }
 
+KEY_PREFIX = "cards_v2"  # <- prefijo único para evitar claves duplicadas
+
 for i, col in enumerate(cols, start=1):
     with col:
         st.markdown(f"<div id='card{i}'>", unsafe_allow_html=True)
-        clicked = st.button(f"{i} · {titles[i-1]}", key=f"card_btn_{i}", use_container_width=True)
+        btn_key = f"{KEY_PREFIX}_{i}"  # <- clave única por botón
+        clicked = st.button(f"{i} · {titles[i-1]}", key=btn_key, use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
 
         if clicked:
