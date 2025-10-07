@@ -163,3 +163,25 @@ with cols2[1]:
             st.switch_page("app.py")
         except Exception:
             st.rerun()
+
+# Mapa: botón -> página destino
+page_map = {
+    1: "pages/3_Cuadro1.py",
+    2: "pages/4_Cuadro2.py",
+    3: "pages/5_Cuadro3.py",
+    4: "pages/6_Cuadro4.py",
+}
+
+for i, col in enumerate(cols, start=1):
+    with col:
+        st.markdown(f"<div id='card{i}'>", unsafe_allow_html=True)
+        clicked = st.button(f"{i} · {titles[i-1]}", key=f"card_btn_{i}", use_container_width=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        if clicked:
+            st.session_state.selected_card = i
+            st.toast(f"Has presionado el botón {i}: {titles[i-1]}")
+            try:
+                st.switch_page(page_map[i])
+            except Exception:
+                st.info("No pude navegar automáticamente. Abre la página desde el menú lateral.")
