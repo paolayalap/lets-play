@@ -31,15 +31,15 @@ titles = ["Cuadro 1", "Cuadro 2", "Cuadro 3", "Cuadro 4"]
 cols = st.columns(4, gap="large")
 
 # CSS para estilizar SOLO estos 4 botones, usando wrappers con id único
-st.markdown(
+st.markdown("""
 <style>
 :root { --card-h: 140px; }
 
 /* Estilo base para los 4 botones dentro de sus wrappers #card1..#card4 */
-card1 .stButton>button,
-card2 .stButton>button,
-card3 .stButton>button,
-card4 .stButton>button {
+#card1 .stButton>button,
+#card2 .stButton>button,
+#card3 .stButton>button,
+#card4 .stButton>button {
     height: var(--card-h);
     width: 100%;
     border-radius: 16px !important;
@@ -51,29 +51,29 @@ card4 .stButton>button {
 }
 
 /* Colores pastel (forzados) */
-card1 .stButton>button { background-color: #FDE68A !important; color: #111 !important; }
-card2 .stButton>button { background-color: #A7F3D0 !important; color: #111 !important; }
-card3 .stButton>button { background-color: #BFDBFE !important; color: #111 !important; }
-card4 .stButton>button { background-color: #FBCFE8 !important; color: #111 !important; }
+#card1 .stButton>button { background-color: #FDE68A !important; color: #111 !important; }
+#card2 .stButton>button { background-color: #A7F3D0 !important; color: #111 !important; }
+#card3 .stButton>button { background-color: #BFDBFE !important; color: #111 !important; }
+#card4 .stButton>button { background-color: #FBCFE8 !important; color: #111 !important; }
 
 /* Hover / Active */
-card1 .stButton>button:hover,
-card2 .stButton>button:hover,
-card3 .stButton>button:hover,
-card4 .stButton>button:hover {
+#card1 .stButton>button:hover,
+#card2 .stButton>button:hover,
+#card3 .stButton>button:hover,
+#card4 .stButton>button:hover {
     filter: brightness(0.97);
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(0,0,0,.12) !important;
 }
-card1 .stButton>button:active,
-card2 .stButton>button:active,
-card3 .stButton>button:active,
-card4 .stButton>button:active {
+#card1 .stButton>button:active,
+#card2 .stButton>button:active,
+#card3 .stButton>button:active,
+#card4 .stButton>button:active {
     transform: translateY(0);
     filter: none;
 }
 </style>
-, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 
 if "selected_card" not in st.session_state:
