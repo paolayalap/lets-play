@@ -20,13 +20,16 @@ if not st.session_state.authenticated:
         if CORRECT_PASSWORD and password == CORRECT_PASSWORD:
             st.session_state.authenticated = True
             st.success("✅ Acceso concedido. Bienvenido mi amor 😍.")
-            st.rerun()
+            # Redirige a la página protegida
+            try:
+                st.switch_page("pages/2_Contenido.py")  # Streamlit ≥ 1.26
+            except Exception:
+                st.experimental_rerun()
         else:
             st.error("❌ Contraseña incorrecta. Intenta de nuevo.")
 else:
-    # Contenido protegido
-    st.success("💖 Acceso autorizado.")
-    st.write("Ahora puedes acceder a las secciones internas de la app.")
-    if st.button("Cerrar sesión"):
-        st.session_state.authenticated = False
-        st.rerun()
+    # Si ya está autenticada, manda directo al contenido
+    try:
+        st.switch_page("pages/2_Contenido.py")
+    except Exception:
+        st.info("✅ Ya autenticado. Abre la página 'Contenido' en el menú.")
