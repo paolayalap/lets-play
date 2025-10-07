@@ -1,20 +1,24 @@
 import streamlit as st
-import random
 
-st.title("✊✋✌️ Piedra, Papel o Tijera")
+# --- CONFIGURACIÓN BÁSICA ---
+st.set_page_config(page_title="Acceso con contraseña", page_icon="🔒")
 
-choices = ["Piedra", "Papel", "Tijera"]
-user_choice = st.radio("Elige tu jugada:", choices)
+# --- BLOQUE DE CONTRASEÑA ---
+st.title("🔒 Acceso restringido")
 
-if st.button("Jugar"):
-    comp_choice = random.choice(choices)
-    st.write(f"Computadora eligió: {comp_choice}")
+# Campo para ingresar la contraseña (el texto se oculta)
+password = st.text_input("Introduce la contraseña:", type="password")
 
-    if user_choice == comp_choice:
-        st.success("¡Empate!")
-    elif (user_choice == "Piedra" and comp_choice == "Tijera") or \
-         (user_choice == "Papel" and comp_choice == "Piedra") or \
-         (user_choice == "Tijera" and comp_choice == "Papel"):
-        st.success("¡Ganaste! 🎉")
+# Contraseña correcta (puedes cambiarla o encriptarla si quieres)
+CORRECT_PASSWORD = "felicid4desAMOR"
+
+# Verificación
+if password:
+    if password == CORRECT_PASSWORD:
+        st.success("✅ Acceso concedido. Bienvenido mi amor 😍.")
+        # Aquí puedes colocar el contenido protegido
+        st.write("Ahora puedes acceder a las secciones internas de la app.")
     else:
-        st.error("Perdiste 😢")
+        st.error("❌ Contraseña incorrecta. Intenta de nuevo.")
+else:
+    st.info("Por favor, ingresa tu contraseña para continuar.")
