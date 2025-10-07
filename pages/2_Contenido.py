@@ -31,7 +31,7 @@ titles = ["Cuadro 1", "Cuadro 2", "Cuadro 3", "Cuadro 4"]
 cols = st.columns(4, gap="large")
 
 # CSS para estilizar SOLO estos 4 botones, usando wrappers con id único
-st.markdown("""
+st.markdown(
 <style>
 :root { --card-h: 140px; }
 
@@ -73,7 +73,7 @@ card4 .stButton>button:active {
     filter: none;
 }
 </style>
-""", unsafe_allow_html=True)
+, unsafe_allow_html=True)
 
 
 if "selected_card" not in st.session_state:
