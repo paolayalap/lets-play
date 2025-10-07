@@ -67,7 +67,6 @@ if "selected_card" not in st.session_state:
 
 for i, col in enumerate(cols, start=1):
     with col:
-        # wrapper con id único para aplicar CSS específico
         st.markdown(f"<div id='card{i}'>", unsafe_allow_html=True)
         clicked = st.button(f"{i} · {titles[i-1]}", key=f"card_btn_{i}", use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
@@ -76,7 +75,6 @@ for i, col in enumerate(cols, start=1):
             st.session_state.selected_card = i
             st.toast(f"Has presionado el botón {i}: {titles[i-1]}")
 
-            # 👉 Si quieres navegar a otra página al hacer clic, descomenta y ajusta:
             # try:
             #     st.switch_page(f"pages/{i+2}_Subpagina{i}.py")
             # except Exception:
@@ -121,22 +119,19 @@ def render_countdown(delta: timedelta):
     placeholder.markdown(html, unsafe_allow_html=True)
     return True
 
-# Toggle para activar/pausar actualización en vivo (recomendado para que la UI siga responsiva)
+# Toggle para activar/pausar actualización en vivo (cada 100 ms)
 live = st.toggle("Actualizar contador en vivo (cada 100 ms)", value=True, help="Desactívalo si notas la app lenta.")
 
 if live:
-    # actualiza por ~3 seg y suelta el hilo para mantener la app responsiva
-    t_end = time.time() + 3
+    t_end = time.time() + 3  # refresca ~3 s y luego re-ejecuta el script
     while time.time() < t_end:
         now = datetime.now(TZ)
         delta = target - now
         if not render_countdown(delta):
             break
         time.sleep(0.1)
-    # pide un rerun automático para continuar el refresco sin bloquear
-    st.experimental_rerun()
+    st.rerun()
 else:
-    # Solo una medición (sin animación)
     now = datetime.now(TZ)
     delta = target - now
     render_countdown(delta)
@@ -146,11 +141,11 @@ st.write("")
 cols2 = st.columns([1,1,2,2])
 with cols2[0]:
     if st.button("🔁 Refrescar una vez"):
-        st.experimental_rerun()
+        st.rerun()
 with cols2[1]:
     if st.button("🚪 Cerrar sesión"):
         st.session_state.authenticated = False
         try:
             st.switch_page("app.py")
         except Exception:
-            st.experimental_rerun()
+            st.rerun()
