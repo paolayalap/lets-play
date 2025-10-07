@@ -36,7 +36,7 @@ st.markdown("""
 :root { --card-h: 140px; }
 
 /* Estilo base para los 4 botones dentro de sus wrappers #card1..#card4 */
-#card1 .stButton>button,
+#card1 .stButton>button { background-color: #ffaaaa !important; border: 3px dashed #000 !important; },
 #card2 .stButton>button,
 #card3 .stButton>button,
 #card4 .stButton>button {
