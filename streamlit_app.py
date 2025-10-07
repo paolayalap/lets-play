@@ -4,20 +4,23 @@ st.set_page_config(page_title="Acceso con contraseña", page_icon="🔒")
 
 st.title("🔒 Acceso restringido")
 
-# Contraseña correcta
-CORRECT_PASSWORD = "felicid4desAMOR"
+# Lee la contraseña desde secrets (configurada en el Cloud)
+CORRECT_PASSWORD = st.secrets.get("password", "")
 
-# Si no hay una variable de sesión, créala
+# Estado de sesión
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
-# Si el usuario aún no se autenticó, pide la contraseña
+# Si no está autenticada, pide contraseña
 if not st.session_state.authenticated:
-    password = st.text_input("Introduce la contraseña:", type="password")
-    if password:
-        if password == CORRECT_PASSWORD:
+    with st.form("login_form"):
+        password = st.text_input("Introduce la contraseña:", type="password")
+        submitted = st.form_submit_button("Entrar")
+    if submitted:
+        if CORRECT_PASSWORD and password == CORRECT_PASSWORD:
             st.session_state.authenticated = True
             st.success("✅ Acceso concedido. Bienvenido mi amor 😍.")
+            st.rerun()
         else:
             st.error("❌ Contraseña incorrecta. Intenta de nuevo.")
 else:
@@ -26,3 +29,4 @@ else:
     st.write("Ahora puedes acceder a las secciones internas de la app.")
     if st.button("Cerrar sesión"):
         st.session_state.authenticated = False
+        st.rerun()
