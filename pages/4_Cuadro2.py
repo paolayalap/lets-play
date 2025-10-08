@@ -233,7 +233,7 @@ if "cw_inputs" not in st.session_state or st.session_state.get("cw_shape") != (R
     st.session_state.crossword_solved = False
 
 # ===================================================================================
-# 5) UI: grilla (izquierda) + pistas (derecha)
+# 5) UI: grilla (izquierda) + pistas (derecha)  ⟵ REEMPLAZA DESDE AQUÍ
 # ===================================================================================
 left, right = st.columns([3, 2], gap="large")
 
@@ -241,34 +241,65 @@ with left:
     st.subheader("Completa el crucigrama")
     st.write("_Escribe solo minúsculas y sin tildes. Una letra por casilla._")
 
+    # ====== Estilos para que las casillas se vean grandes y la letra centrada ======
+    st.markdown("""
+    <style>
+    /* Contenedor para limitar el alcance del estilo */
+    #cwgrid [data-testid="stTextInput"] > div > input {
+        width: 48px;              /* ancho de la casilla */
+        height: 48px;             /* alto de la casilla (cuadrada) */
+        padding: 0 !important;
+        text-align: center;
+        font-weight: 800;
+        font-size: 24px;          /* tamaño de la letra */
+        line-height: 48px;
+        background-color: #ffffff !important;
+        color: #111 !important;
+        border: 1px solid rgba(0,0,0,.25) !important;
+        border-radius: 8px !important;
+    }
+    #cwgrid .blocked {
+        width: 48px; height: 48px;
+        background:#111; border-radius:8px;
+    }
+    #cwgrid .cellnum {
+        font-size:11px; opacity:.7; margin-bottom:-6px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("<div id='cwgrid'>", unsafe_allow_html=True)
+
     for r in range(ROWS):
         cols = st.columns(COLS, gap="small")
         for c in range(COLS):
             with cols[c]:
-                if is_letter(r, c):
-                    # número pequeño si inicia palabra
+                if (r, c) in solution:
+                    # numerito si inicia palabra
                     if (r, c) in num_map:
-                        st.markdown(
-                            f"<div style='font-size:11px;opacity:.7;margin-bottom:-8px'>{num_map[(r,c)]}</div>",
-                            unsafe_allow_html=True
-                        )
+                        st.markdown(f"<div class='cellnum'>{num_map[(r,c)]}</div>", unsafe_allow_html=True)
+
                     key = f"cw_{r}_{c}"
-                    default_val = st.session_state.cw_inputs.get((r, c), "")
-                    val = st.text_input(
-                        label=" ",
-                        key=key,
-                        value=default_val,
-                        max_chars=1,
-                        label_visibility="collapsed",
-                    )
-                    val = sanitize_cell(val)
-                    if val != st.session_state.cw_inputs.get((r, c), ""):
-                        st.session_state.cw_inputs[(r, c)] = val
+
+                    # 1) valor actual del widget (o vacío si primera vez)
+                    cur_val = st.session_state.get(key, "")
+                    # 2) pintamos el widget (no pasamos 'value' fijo para no bloquear su estado)
+                    _ = st.text_input(" ", key=key, max_chars=1, label_visibility="collapsed")
+
+                    # 3) saneamos y reflejamos de vuelta en el widget si cambió
+                    new_val = "".join(
+                        ch for ch in unicodedata.normalize("NFD", st.session_state.get(key, "").lower())
+                        if "a" <= ch <= "z"
+                    )[:1]
+                    if new_val != st.session_state.get(key, ""):
+                        st.session_state[key] = new_val
+
+                    # 4) guardamos también en nuestra matriz de solución del usuario
+                    st.session_state.cw_inputs[(r, c)] = st.session_state.get(key, "")
                 else:
-                    st.markdown(
-                        "<div style='width:100%; aspect-ratio:1/1; background:#111; border-radius:6px;'></div>",
-                        unsafe_allow_html=True
-                    )
+                    st.markdown("<div class='blocked'></div>", unsafe_allow_html=True)
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
     st.write("")
     # ===== Botonera: validar | limpiar | volver
@@ -286,8 +317,14 @@ with left:
                 st.warning(f"Letras correctas: {correct}/{total}. Sigue intentando.")
     with c2:
         if st.button("🗑️ Borrar entradas"):
+            # limpia tanto nuestro buffer como los widgets
             for k in list(st.session_state.cw_inputs.keys()):
                 st.session_state.cw_inputs[k] = ""
+            for r in range(ROWS):
+                for c in range(COLS):
+                    key = f"cw_{r}_{c}"
+                    if key in st.session_state:
+                        st.session_state[key] = ""
             st.session_state.crossword_solved = False
             st.rerun()
     with c3:
