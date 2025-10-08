@@ -254,3 +254,35 @@ with left:
                 st.session_state.cuadro2_solved = True      # <- 🔓 habilita Cuadro 3
                 st.success("🎉 ¡Crucigrama completado!")
             else:
+                st.warning(f"Letras correctas: {correct}/{total}. Sigue intentando.")
+    with c2:
+        if st.button("🗑️ Borrar entradas"):
+            for k in list(st.session_state.cw_inputs.keys()):
+                st.session_state.cw_inputs[k] = ""
+            st.session_state.crossword_solved = False
+            st.rerun()
+    with c3:
+        if st.button("⬅️ Volver a Contenido"):
+            try: st.switch_page("pages/2_Contenido.py")
+            except Exception: st.rerun()
+
+    # Botón Siguiente cuadro (solo si está resuelto)
+    disabled_next = not st.session_state.get("crossword_solved", False)
+    if st.button("➡️ Siguiente cuadro", disabled=disabled_next):
+        try:
+            st.switch_page("pages/5_Cuadro3.py")
+        except Exception:
+            st.rerun()
+
+with right:
+    st.subheader("Pistas")
+    st.markdown("**Horizontales**")
+    for num, w in across_list:
+        clue_text = next((q for q, ww in WORDS if ww == w), "(sin texto)")
+        st.markdown(f"**{num}.** {clue_text}")
+
+    st.markdown("---")
+    st.markdown("**Verticales**")
+    for num, w in down_list:
+        clue_text = next((q for q, ww in WORDS if ww == w), "(sin texto)")
+        st.markdown(f"**{num}.** {clue_text}")
