@@ -235,7 +235,7 @@ if "cw_inputs" not in st.session_state or st.session_state.get("cw_shape") != (R
 # ===================================================================================
 # 5) UI: grilla (izquierda) + pistas (derecha)
 # ===================================================================================
-left, right = st.columns([3, 3], gap="large")
+left, right = st.columns([4, 4], gap="large")
 
 with left:
     st.subheader("Completa el crucigrama")
