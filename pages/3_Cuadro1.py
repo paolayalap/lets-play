@@ -41,7 +41,7 @@ st.title("🧩 Rompecabezas (6×6)")
 st.caption(f"Hora local: {datetime.now(TZ).strftime('%Y-%m-%d %H:%M:%S')}")
 
 # ======= Config fija (6x6) =======
-N = 6              # <-- fijo, sin slider
+N = 3              # <-- fijo, sin slider
 SIZE = 720         # tamaño del lienzo cuadrado en px (ajusta si quieres más/menos grande)
 
 # ======= Carga de imagen =======
