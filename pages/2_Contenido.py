@@ -66,17 +66,22 @@ page_map = {
 }
 
 def go_to(i: int):
-    # 1 -> Rompecabezas, 2 -> Crucigrama, 3 -> siguiente actividad...
+    # 1 -> Rompecabezas, 2 -> Crucigrama, 3 -> Memoria, 4 -> siguiente actividad...
     if i == 2 and not st.session_state.get("puzzle_solved", False):
         st.warning("Debes completar el Cuadro 1 (rompecabezas) antes de continuar.")
         return
     if i == 3 and not st.session_state.get("cuadro2_solved", False):
         st.warning("Debes completar el Cuadro 2 (crucigrama) antes de continuar.")
         return
+    if i == 4 and not st.session_state.get("cuadro3_solved", False):
+        st.warning("Debes completar el Cuadro 3 (memoria) antes de continuar.")
+        return
+
     try:
         st.switch_page(page_map[i])
     except Exception:
         st.info("No pude navegar automáticamente. Abre la página desde el menú lateral.")
+
 
 KEY_PREFIX = "cards_v3"  # prefijo único para las keys
 
