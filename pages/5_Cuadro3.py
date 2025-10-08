@@ -25,16 +25,16 @@ st.caption(f"Hora local: {datetime.now(TZ).strftime('%Y-%m-%d %H:%M:%S')}")
 
 # ====== Configuración de imágenes (10 pares -> 20 cartas) ======
 IMG_PATHS = [
-    "assets/mem/1.jpeg",
-    "assets/mem/2.jpeg",
-    "assets/mem/3.jpeg",
-    "assets/mem/4.jpeg",
-    "assets/mem/5.jpeg",
-    "assets/mem/6.jpeg",
-    "assets/mem/7.jpeg",
-    "assets/mem/8.jpeg",
-    "assets/mem/9.jpeg",
-    "assets/mem/10.jpeg",
+    "assets/1.jpeg",
+    "assets/2.jpeg",
+    "assets/3.jpeg",
+    "assets/4.jpeg",
+    "assets/5.jpeg",
+    "assets/6.jpeg",
+    "assets/7.jpeg",
+    "assets/8.jpeg",
+    "assets/9.jpeg",
+    "assets/10.jpeg",
 ]
 NUM_PAIRS = len(IMG_PATHS)
 COLS = 5          # 5 columnas x 4 filas
