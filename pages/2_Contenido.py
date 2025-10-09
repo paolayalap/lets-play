@@ -19,7 +19,6 @@ TZ = ZoneInfo("America/Guatemala")
 # 👉 El Cuadro 1 se activa desde el 14/oct/2025 (inclusive)
 AVAILABLE_FROM = datetime(2025, 10, 14, 0, 0, 0, tzinfo=TZ)
 
-
 # --- Encabezado con fecha actual ---
 now = datetime.now(TZ)
 st.markdown(f"### 📅 Fecha actual: **{now.strftime('%Y-%m-%d %H:%M:')[:-3]}**")
@@ -91,7 +90,6 @@ def go_to(i: int):
     except Exception:
         st.info("No puedes navegar automáticamente. Abre la página desde el menú lateral.")
 
-
 KEY_PREFIX = "cards_v3"  # prefijo único para las keys
 
 for i, col in enumerate(cols, start=1):
@@ -107,13 +105,11 @@ for i, col in enumerate(cols, start=1):
 
 st.divider()
 
-
-
 # =========================
 #  CONTADOR REGRESIVO
 # =========================
 st.markdown("### ⏳ Tiempo restante para **14 de octubre de 2025**")
-target = datetime(2025, 10, 9, 0, 0, 0, tzinfo=TZ)
+target = datetime(2025, 10, 9, 0, 0, 0, tzinfo=TZ)  # ← tu target de prueba actual
 placeholder = st.empty()
 
 def render_countdown(delta: timedelta):
@@ -147,7 +143,6 @@ def render_countdown(delta: timedelta):
     placeholder.markdown(html, unsafe_allow_html=True)
     return True
 
-
 # Toggle para activar/pausar actualización en vivo (cada 100 ms)
 live = st.toggle("Actualizar contador en vivo (cada 100 ms)", value=True, help="Desactívalo si notas la app lenta.")
 
@@ -165,6 +160,48 @@ else:
     delta = target - now
     render_countdown(delta)
 
+# --- 👇 ADICIÓN: Globos animados en los bordes durante TODO el día del 'target' ---
+if datetime.now(TZ).date() == target.date():
+    st.markdown("""
+    <style>
+    .balloons-overlay{
+        position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+    }
+    .balloons-strip{
+        position: absolute; top: 0; height: 100vh; width: 64px; display: block;
+    }
+    .balloons-left{ left: 0; }
+    .balloons-right{ right: 0; }
+    .b{
+        position: absolute; left: 8px;
+        font-size: 28px; opacity: .95;
+        animation: rise linear infinite;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,.25));
+    }
+    @keyframes rise {
+        0%   { transform: translateY(110vh) rotate(0deg); }
+        100% { transform: translateY(-10vh) rotate(12deg); }
+    }
+    </style>
+
+    <div class="balloons-overlay">
+      <div class="balloons-strip balloons-left">
+        <span class="b" style="animation-duration: 7s;  animation-delay: 0s;">🎈</span>
+        <span class="b" style="animation-duration: 8.5s;animation-delay: 1s; left: 24px;">🎈</span>
+        <span class="b" style="animation-duration: 9s;  animation-delay: 2.2s;">🎈</span>
+        <span class="b" style="animation-duration: 7.8s;animation-delay: 3.4s; left: 20px;">🎈</span>
+        <span class="b" style="animation-duration: 8.2s;animation-delay: 4.6s;">🎈</span>
+      </div>
+      <div class="balloons-strip balloons-right">
+        <span class="b" style="animation-duration: 7.5s;animation-delay: .6s; left: 24px;">🎈</span>
+        <span class="b" style="animation-duration: 9.2s;animation-delay: 1.8s;">🎈</span>
+        <span class="b" style="animation-duration: 8s;  animation-delay: 2.9s; left: 18px;">🎈</span>
+        <span class="b" style="animation-duration: 9s;  animation-delay: 3.7s;">🎈</span>
+        <span class="b" style="animation-duration: 8.4s;animation-delay: 4.9s; left: 26px;">🎈</span>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
 # --- Controles útiles ---
 st.write("")
 cols2 = st.columns([1,1,2,2])
@@ -178,4 +215,3 @@ with cols2[1]:
             st.switch_page("app.py")
         except Exception:
             st.rerun()
-
