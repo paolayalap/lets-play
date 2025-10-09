@@ -21,6 +21,8 @@ if not st.session_state.get("cuadro3_solved", False):
 TZ = ZoneInfo("America/Guatemala")
 st.title("🎮 Mini Pac-Man")
 st.caption(f"Hora local: {datetime.now(TZ).strftime('%Y-%m-%d %H:%M:%S')}")
+st.subheader("Acumula todos los puntos de pac-man")
+st.write("Para variar un poco del tipo de juego mi bello, este es un clásico, pero un tantito diferente porque hay que hacerlo con mucha paciencia corazón⌛🩷.")
 
 # =========================
 #   Laberinto (9x19)
