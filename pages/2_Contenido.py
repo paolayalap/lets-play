@@ -16,9 +16,13 @@ if "authenticated" not in st.session_state or not st.session_state.authenticated
 # --- Zona horaria: Guatemala ---
 TZ = ZoneInfo("America/Guatemala")
 
+# 👉 El Cuadro 1 se activa desde el 14/oct/2025 (inclusive)
+AVAILABLE_FROM = datetime(2025, 10, 14, 0, 0, 0, tzinfo=TZ)
+
+
 # --- Encabezado con fecha actual ---
 now = datetime.now(TZ)
-st.markdown(f"### 📅 Fecha actual (America/Guatemala): **{now.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]}**")
+st.markdown(f"### 📅 Fecha actual: **{now.strftime('%Y-%m-%d %H:%M:')[:-3]}**")
 
 st.divider()
 
@@ -66,6 +70,11 @@ page_map = {
 }
 
 def go_to(i: int):
+    # Si es el Cuadro 1 y aún no es 14/oct/2025, solo muestra el mensaje
+    if i == 1 and datetime.now(TZ) < AVAILABLE_FROM:
+        st.info("Espera mi amor, ya falta poco, te amo mucho ❤️")
+        return
+
     # 1 -> Rompecabezas, 2 -> Crucigrama, 3 -> Memoria, 4 -> siguiente actividad...
     if i == 2 and not st.session_state.get("puzzle_solved", False):
         st.warning("Debes completar el Cuadro 1 (rompecabezas) antes de continuar.")
@@ -80,7 +89,7 @@ def go_to(i: int):
     try:
         st.switch_page(page_map[i])
     except Exception:
-        st.info("No pude navegar automáticamente. Abre la página desde el menú lateral.")
+        st.info("No puedes navegar automáticamente. Abre la página desde el menú lateral.")
 
 
 KEY_PREFIX = "cards_v3"  # prefijo único para las keys
@@ -104,13 +113,14 @@ st.divider()
 #  CONTADOR REGRESIVO
 # =========================
 st.markdown("### ⏳ Tiempo restante para **14 de octubre de 2025**")
-target = datetime(2025, 10, 14, 0, 0, 0, tzinfo=TZ)
+target = datetime(2025, 10, 9, 0, 0, 0, tzinfo=TZ)
 placeholder = st.empty()
 
 def render_countdown(delta: timedelta):
     total_ms = int(delta.total_seconds() * 1000)
-    if total_ms < 0:
+    if total_ms <= 0:
         placeholder.success("🎉 ¡14 de octubre de 2025 ha llegado!")
+        st.balloons()
         return False
 
     days = delta.days
@@ -136,6 +146,7 @@ def render_countdown(delta: timedelta):
     """
     placeholder.markdown(html, unsafe_allow_html=True)
     return True
+
 
 # Toggle para activar/pausar actualización en vivo (cada 100 ms)
 live = st.toggle("Actualizar contador en vivo (cada 100 ms)", value=True, help="Desactívalo si notas la app lenta.")
