@@ -40,7 +40,7 @@ TZ = ZoneInfo("America/Guatemala")
 st.title("🧩 Rompecabezas")
 st.caption(f"Hora local: {datetime.now(TZ).strftime('%Y-%m-%d %H:%M:%S')}")
 st.write("Bueno mi lindo, este es el primer juego. Como dirías tu ¡Sencillo!👌 Jajaja son bromas corazón. Para darte contexto, esta es una imagen o una representación visual de nuestra casita ideal. Esta es una idea generada por IA, a mi me gusta mucho sobretodo porque se parece a la casita de Minecraft (aunque le falta el huerto🪴 con nuestras vacas🐮, caballitos🐴 y cerditos🐷).")
-st.write("Es una idea de nuestra casia, porque nuestro hogar somos tu y yo sin importar donde estemos❤️🏘️❤️.")
+st.write("Es una idea de nuestra casita, porque nuestro hogar somos tu y yo sin importar donde estemos❤️🏘️❤️.")
 
 # ======= Config fija (6x6) =======
 N = 3              # <-- fijo, sin slider
