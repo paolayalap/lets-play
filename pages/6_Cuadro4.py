@@ -128,7 +128,7 @@ def move_ghosts():
             r, c = cell
             dist = abs(r - pr) + abs(c - pc)
             return -dist if st.session_state.pm_power_timer == 0 else dist
-        # mejor opción (si hay varias, una al azar entre las mejores)
+        # mejor opción
         best_val = None
         best = []
         for opt in options:
@@ -239,12 +239,10 @@ def render_board():
                 html.append('<div class="cell wall"></div>')
                 continue
             classes = ["cell","floor"]
-            # contenido
             inner = ""
             if pos == P:
                 inner = '<div class="pacman"></div>'
             elif pos in Gs:
-                # primer fantasma rojo, segundo azul
                 idx = Gs.index(pos)
                 gcls = "ghost blue" if idx==1 else "ghost"
                 inner = f'<div class="{gcls}"></div>'
@@ -295,3 +293,7 @@ if st.session_state.pm_win:
     st.session_state.cuadro4_solved = True
 elif st.session_state.pm_game_over:
     st.error("💀 Te quedaste sin vidas. ¡Inténtalo de nuevo!")
+
+# ====== 👇 ADICIÓN: mostrar la imagen cuando ya se comieron todos los puntos ======
+if st.session_state.pm_win:
+    st.image("assets/10.jpeg", use_container_width=True)
