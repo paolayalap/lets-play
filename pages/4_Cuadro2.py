@@ -239,7 +239,7 @@ left, right = st.columns([3, 1], gap="large")
 
 with left:
     st.subheader("Completa el crucigrama")
-    st.write("_Escribe solo minúsculas y sin tildes. Una letra por casilla._")
+    st.write("Escribe solo minúsculas y sin tildes. Una letra por casilla mi amor 😘, en este juego hay palabras que decimos muy seguido coazón👀.")
 
     for r in range(ROWS):
         cols = st.columns(COLS, gap="small")
