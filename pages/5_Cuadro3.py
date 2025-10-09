@@ -20,8 +20,10 @@ if not st.session_state.get("cuadro2_solved", False):
     st.stop()
 
 TZ = ZoneInfo("America/Guatemala")
-st.title("🧠 Juego de Memoria (parejas)")
+st.title("Juego de Memoria 📷")
 st.caption(f"Hora local: {datetime.now(TZ).strftime('%Y-%m-%d %H:%M:%S')}")
+st.subheader("Empareja las fotos")
+st.write("En este juego mi lindo, hay fotos de nosotros de momentos increíbles💖. La idea es que al terminar el juego tengas un pequeño collage nuestro de recuerdos de este año amor💫.")
 
 # ====== Configuración de imágenes (10 pares -> 20 cartas) ======
 IMG_PATHS = [
