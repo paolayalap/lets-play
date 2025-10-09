@@ -44,7 +44,7 @@ st.write("Bueno mi lindo, este es el primer juego. Como dirías tu ¡Sencillo!�
 st.write("Es una idea de nuestra casita, porque nuestro hogar somos tu y yo sin importar donde estemos❤️🏘️❤️.")
 
 # ======= Config fija (6x6) =======
-N = 3              # <-- fijo, sin slider
+N = 6              # <-- fijo, sin slider
 SIZE = 720         # tamaño del lienzo cuadrado en px (ajusta si quieres más/menos grande)
 
 # ======= Carga de imagen =======
