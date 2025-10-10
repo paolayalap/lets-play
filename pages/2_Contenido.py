@@ -19,6 +19,18 @@ TZ = ZoneInfo("America/Guatemala")
 # 👉 El Cuadro 1 se activa desde el 14/oct/2025 (inclusive)
 AVAILABLE_FROM = datetime(2025, 10, 14, 0, 0, 0, tzinfo=TZ)
 
+# --- Target de prueba ---
+target = datetime(2025, 10, 9, 0, 0, 0, tzinfo=TZ)
+
+# 💖 Mostrar título de cumpleaños si ya llegó la fecha
+if datetime.now(TZ) >= target:
+    st.markdown("""
+    <h1 style='text-align:center; font-size:44px; color:#FF4B4B; margin-top:-10px;'>
+        ❤️🎉 ¡FELIZ CUMPLEAÑOS MI AMOR LINDO! 🥳💋❤️
+    </h1>
+    """, unsafe_allow_html=True)
+    st.balloons()
+
 # --- Encabezado con fecha actual ---
 now = datetime.now(TZ)
 st.markdown(f"### 📅 Fecha actual: **{now.strftime('%Y-%m-%d %H:%M:')[:-3]}**")
@@ -31,7 +43,6 @@ st.divider()
 st.markdown("""
 <style>
 :root { --card-h: 140px; }
-/* Estilo base para los 4 botones dentro de sus wrappers #card1..#card4 */
 #card1 .stButton>button, #card2 .stButton>button, #card3 .stButton>button, #card4 .stButton>button {
     height: var(--card-h); width: 100%;
     border-radius: 16px !important;
@@ -39,12 +50,10 @@ st.markdown("""
     box-shadow: 0 2px 6px rgba(0,0,0,.08) !important;
     border: 0 !important; background-image: none !important;
 }
-/* Colores pastel (forzados) */
 #card1 .stButton>button { background-color: #FDE68A !important; color: #111 !important; }
 #card2 .stButton>button { background-color: #A7F3D0 !important; color: #111 !important; }
 #card3 .stButton>button { background-color: #BFDBFE !important; color: #111 !important; }
 #card4 .stButton>button { background-color: #FBCFE8 !important; color: #111 !important; }
-/* Hover / Active */
 #card1 .stButton>button:hover, #card2 .stButton>button:hover,
 #card3 .stButton>button:hover, #card4 .stButton>button:hover {
     filter: brightness(0.97); transform: translateY(-1px);
@@ -60,7 +69,6 @@ st.markdown("""
 titles = ["Cuadro 1", "Cuadro 2", "Cuadro 3", "Cuadro 4"]
 cols = st.columns(4, gap="large")
 
-# Mapa: botón -> página destino
 page_map = {
     1: "pages/3_Cuadro1.py",
     2: "pages/4_Cuadro2.py",
@@ -69,12 +77,9 @@ page_map = {
 }
 
 def go_to(i: int):
-    # Si es el Cuadro 1 y aún no es 14/oct/2025, solo muestra el mensaje
     if i == 1 and datetime.now(TZ) < AVAILABLE_FROM:
         st.info("Espera mi amor, ya falta poco, te amo mucho ❤️")
         return
-
-    # 1 -> Rompecabezas, 2 -> Crucigrama, 3 -> Memoria, 4 -> siguiente actividad...
     if i == 2 and not st.session_state.get("puzzle_solved", False):
         st.warning("Debes completar el Cuadro 1 (rompecabezas) antes de continuar.")
         return
@@ -84,20 +89,18 @@ def go_to(i: int):
     if i == 4 and not st.session_state.get("cuadro3_solved", False):
         st.warning("Debes completar el Cuadro 3 (memoria) antes de continuar.")
         return
-
     try:
         st.switch_page(page_map[i])
     except Exception:
         st.info("No puedes navegar automáticamente. Abre la página desde el menú lateral.")
 
-KEY_PREFIX = "cards_v3"  # prefijo único para las keys
+KEY_PREFIX = "cards_v3"
 
 for i, col in enumerate(cols, start=1):
     with col:
         st.markdown(f"<div id='card{i}'>", unsafe_allow_html=True)
         clicked = st.button(f"{i} · {titles[i-1]}", key=f"{KEY_PREFIX}_{i}", use_container_width=True)
         st.markdown("</div>", unsafe_allow_html=True)
-
         if clicked:
             st.session_state.selected_card = i
             st.toast(f"Has presionado el botón {i}: {titles[i-1]}")
@@ -109,51 +112,36 @@ st.divider()
 #  CONTADOR REGRESIVO
 # =========================
 st.markdown("### ⏳ Tiempo restante para **14 de octubre de 2025**")
-target = datetime(2025, 10, 9, 0, 0, 0, tzinfo=TZ)  # ← tu target de prueba actual
 placeholder = st.empty()
 
 def render_countdown(delta: timedelta):
     total_ms = int(delta.total_seconds() * 1000)
     if total_ms <= 0:
-        # 🎉 Mostrar título especial de cumpleaños arriba
-        st.markdown("""
-        <h1 style='text-align:center; font-size:42px; color:#FF4B4B;'>
-        ❤️🎉 ¡FELIZ CUMPLEAÑOS MI AMOR LINDO! 🥳❤️
-        </h1>
-        """, unsafe_allow_html=True)
         placeholder.success("🎉 ¡14 de octubre de 2025 ha llegado!")
-        st.balloons()  # estallido inmediato al llegar
         return False
-
     days = delta.days
     secs_rem = delta.seconds
     hrs = secs_rem // 3600
     mins = (secs_rem % 3600) // 60
     secs = (secs_rem % 60)
     ms = delta.microseconds // 1000
-
     html = f"""
     <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
                 font-size: 28px; font-weight: 700; text-align:center;">
-        <span style="display:inline-block; min-width:120px;">{days:02d} <small style="font-weight:400;">días</small></span>
-        :
-        <span style="display:inline-block; min-width:120px;">{hrs:02d} <small style="font-weight:400;">horas</small></span>
-        :
-        <span style="display:inline-block; min-width:120px;">{mins:02d} <small style="font-weight:400;">min</small></span>
-        :
-        <span style="display:inline-block; min-width:120px;">{secs:02d} <small style="font-weight:400;">seg</small></span>
-        :
-        <span style="display:inline-block; min-width:140px;">{ms:03d} <small style="font-weight:400;">ms</small></span>
+        <span style="display:inline-block; min-width:120px;">{days:02d} <small>días</small></span> :
+        <span style="display:inline-block; min-width:120px;">{hrs:02d} <small>horas</small></span> :
+        <span style="display:inline-block; min-width:120px;">{mins:02d} <small>min</small></span> :
+        <span style="display:inline-block; min-width:120px;">{secs:02d} <small>seg</small></span> :
+        <span style="display:inline-block; min-width:140px;">{ms:03d} <small>ms</small></span>
     </div>
     """
     placeholder.markdown(html, unsafe_allow_html=True)
     return True
 
-# Toggle para activar/pausar actualización en vivo (cada 100 ms)
-live = st.toggle("Actualizar contador en vivo (cada 100 ms)", value=True, help="Desactívalo si notas la app lenta.")
+live = st.toggle("Actualizar contador en vivo (cada 100 ms)", value=True)
 
 if live:
-    t_end = time.time() + 3  # refresca ~3 s y luego re-ejecuta el script
+    t_end = time.time() + 3
     while time.time() < t_end:
         now = datetime.now(TZ)
         delta = target - now
@@ -166,18 +154,18 @@ else:
     delta = target - now
     render_countdown(delta)
 
-# ======= 👇 NUEVO: Globos periódicos cada 10 s a partir del target =======
+# ======= Globos periódicos cada 10 s =======
 if datetime.now(TZ) >= target:
     if "last_balloons_at" not in st.session_state:
-        st.session_state.last_balloons_at = 0.0  # epoch
+        st.session_state.last_balloons_at = 0.0
     now_ts = time.time()
-    if now_ts - st.session_state.last_balloons_at >= 10:  # cada 10 s
+    if now_ts - st.session_state.last_balloons_at >= 10:
         st.balloons()
         st.session_state.last_balloons_at = now_ts
 
 # --- Controles útiles ---
 st.write("")
-cols2 = st.columns([1,1,2,2])
+cols2 = st.columns([1, 1, 2, 2])
 with cols2[0]:
     if st.button("🔁 Refrescar una vez"):
         st.rerun()
