@@ -115,6 +115,12 @@ placeholder = st.empty()
 def render_countdown(delta: timedelta):
     total_ms = int(delta.total_seconds() * 1000)
     if total_ms <= 0:
+        # 🎉 Mostrar título especial de cumpleaños arriba
+        st.markdown("""
+        <h1 style='text-align:center; font-size:42px; color:#FF4B4B;'>
+        ❤️🎉 ¡FELIZ CUMPLEAÑOS MI AMOR LINDO! 🥳❤️
+        </h1>
+        """, unsafe_allow_html=True)
         placeholder.success("🎉 ¡14 de octubre de 2025 ha llegado!")
         st.balloons()  # estallido inmediato al llegar
         return False
@@ -168,8 +174,6 @@ if datetime.now(TZ) >= target:
     if now_ts - st.session_state.last_balloons_at >= 10:  # cada 10 s
         st.balloons()
         st.session_state.last_balloons_at = now_ts
-# (Si tienes el toggle 'live' encendido, la página ya se re-ejecuta sola y esto se mantiene;
-# si está apagado, los globos saldrán cuando interactúes o pulses "Refrescar".)
 
 # --- Controles útiles ---
 st.write("")
