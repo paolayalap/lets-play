@@ -298,4 +298,4 @@ elif st.session_state.pm_game_over:
 
 # ====== 👇 ADICIÓN: mostrar la imagen cuando ya se comieron todos los puntos ======
 if st.session_state.pm_win:
-    st.image("assets/10.jpeg", use_container_width=True)
+    st.image("assets/11.png", use_container_width=True)
