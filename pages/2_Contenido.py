@@ -37,7 +37,7 @@ st.markdown(f"### 📅 Fecha actual: **{now.strftime('%Y-%m-%d %H:%M')}**")
 
 # --- Descripción del regalo virtual ---
 st.write("¡Hola mi amor!💘 Esta es una parte de tu regalo, un regalo especial para un ser humano extraordinario y ese ser eres tu corazón. Esta página es solo para ti y está compuesto de varios jueguitos para entretenerte porque jugar es uno de tus hobbies favoritos🕹️.")
-st.write("Los juegos se activarán el día de tu cumple así que, serán legen...espera...LEGENDARIOS"💖🙌😍.)
+st.write("Los juegos se activarán el día de tu cumple así que, serán legen...espera...LEGENDARIOS💖🙌😍.")
 st.divider()
 
 # =========================
