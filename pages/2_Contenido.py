@@ -33,7 +33,7 @@ if datetime.now(TZ) >= target:
 
 # --- Encabezado con fecha actual ---
 now = datetime.now(TZ)
-st.markdown(f"### 📅 Fecha actual: **{now.strftime('%Y-%m-%d %H:%M:')[:-3]}**")
+st.markdown(f"### 📅 Fecha actual: **{now.strftime('%Y-%m-%d')[:-3]}**")
 
 st.divider()
 
