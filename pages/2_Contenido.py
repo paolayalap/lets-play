@@ -20,13 +20,13 @@ TZ = ZoneInfo("America/Guatemala")
 AVAILABLE_FROM = datetime(2025, 10, 14, 0, 0, 0, tzinfo=TZ)
 
 # --- Target de prueba ---
-target = datetime(2025, 10, 9, 0, 0, 0, tzinfo=TZ)
+target = datetime(2025, 10, 14, 0, 0, 0, tzinfo=TZ)
 
 # 💖 Mostrar título de cumpleaños si ya llegó la fecha
 if datetime.now(TZ) >= target:
     st.markdown("""
     <h1 style='text-align:center; font-size:44px; color:#FF4B4B; margin-top:-10px;'>
-        ❤️🎉 ¡FELIZ CUMPLEAÑOS MI AMOR LINDO! 🥳💋❤️
+        ❤️🎉 ¡FELIZ CUMPLEAÑOS MI AMOR LINDO! 🥳❤️
     </h1>
     """, unsafe_allow_html=True)
     st.balloons()
@@ -66,7 +66,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-titles = ["Cuadro 1", "Cuadro 2", "Cuadro 3", "Cuadro 4"]
+titles = ["Juego 1", "Juego 2", "Juego 3", "Juego 4"]
 cols = st.columns(4, gap="large")
 
 page_map = {
@@ -81,13 +81,13 @@ def go_to(i: int):
         st.info("Espera mi amor, ya falta poco, te amo mucho ❤️")
         return
     if i == 2 and not st.session_state.get("puzzle_solved", False):
-        st.warning("Debes completar el Cuadro 1 (rompecabezas) antes de continuar.")
+        st.warning("Debes completar el juego 1 antes de continuar.")
         return
     if i == 3 and not st.session_state.get("cuadro2_solved", False):
-        st.warning("Debes completar el Cuadro 2 (crucigrama) antes de continuar.")
+        st.warning("Debes completar el juego 2 antes de continuar.")
         return
     if i == 4 and not st.session_state.get("cuadro3_solved", False):
-        st.warning("Debes completar el Cuadro 3 (memoria) antes de continuar.")
+        st.warning("Debes completar el juego 3 antes de continuar.")
         return
     try:
         st.switch_page(page_map[i])
