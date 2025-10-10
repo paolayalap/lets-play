@@ -116,7 +116,7 @@ def render_countdown(delta: timedelta):
     total_ms = int(delta.total_seconds() * 1000)
     if total_ms <= 0:
         placeholder.success("🎉 ¡14 de octubre de 2025 ha llegado!")
-        st.balloons()
+        st.balloons()  # estallido inmediato al llegar
         return False
 
     days = delta.days
@@ -160,47 +160,16 @@ else:
     delta = target - now
     render_countdown(delta)
 
-# --- 👇 ADICIÓN: Globos animados en los bordes durante TODO el día del 'target' ---
-if datetime.now(TZ).date() == target.date():
-    st.markdown("""
-    <style>
-    .balloons-overlay{
-        position: fixed; inset: 0; pointer-events: none; z-index: 9999;
-    }
-    .balloons-strip{
-        position: absolute; top: 0; height: 100vh; width: 64px; display: block;
-    }
-    .balloons-left{ left: 0; }
-    .balloons-right{ right: 0; }
-    .b{
-        position: absolute; left: 8px;
-        font-size: 28px; opacity: .95;
-        animation: rise linear infinite;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,.25));
-    }
-    @keyframes rise {
-        0%   { transform: translateY(110vh) rotate(0deg); }
-        100% { transform: translateY(-10vh) rotate(12deg); }
-    }
-    </style>
-
-    <div class="balloons-overlay">
-      <div class="balloons-strip balloons-left">
-        <span class="b" style="animation-duration: 7s;  animation-delay: 0s;">🎈</span>
-        <span class="b" style="animation-duration: 8.5s;animation-delay: 1s; left: 24px;">🎈</span>
-        <span class="b" style="animation-duration: 9s;  animation-delay: 2.2s;">🎈</span>
-        <span class="b" style="animation-duration: 7.8s;animation-delay: 3.4s; left: 20px;">🎈</span>
-        <span class="b" style="animation-duration: 8.2s;animation-delay: 4.6s;">🎈</span>
-      </div>
-      <div class="balloons-strip balloons-right">
-        <span class="b" style="animation-duration: 7.5s;animation-delay: .6s; left: 24px;">🎈</span>
-        <span class="b" style="animation-duration: 9.2s;animation-delay: 1.8s;">🎈</span>
-        <span class="b" style="animation-duration: 8s;  animation-delay: 2.9s; left: 18px;">🎈</span>
-        <span class="b" style="animation-duration: 9s;  animation-delay: 3.7s;">🎈</span>
-        <span class="b" style="animation-duration: 8.4s;animation-delay: 4.9s; left: 26px;">🎈</span>
-      </div>
-    </div>
-    """, unsafe_allow_html=True)
+# ======= 👇 NUEVO: Globos periódicos cada 10 s a partir del target =======
+if datetime.now(TZ) >= target:
+    if "last_balloons_at" not in st.session_state:
+        st.session_state.last_balloons_at = 0.0  # epoch
+    now_ts = time.time()
+    if now_ts - st.session_state.last_balloons_at >= 10:  # cada 10 s
+        st.balloons()
+        st.session_state.last_balloons_at = now_ts
+# (Si tienes el toggle 'live' encendido, la página ya se re-ejecuta sola y esto se mantiene;
+# si está apagado, los globos saldrán cuando interactúes o pulses "Refrescar".)
 
 # --- Controles útiles ---
 st.write("")
