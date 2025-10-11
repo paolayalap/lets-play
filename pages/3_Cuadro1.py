@@ -36,6 +36,20 @@ if "authenticated" not in st.session_state or not st.session_state.authenticated
     except Exception:
         st.stop()
 
+# --- Fecha de activación del Cuadro 1 ---
+TZ = ZoneInfo("America/Guatemala")
+AVAILABLE_FROM = datetime(2025, 10, 14, 0, 0, 0, tzinfo=TZ)
+
+# 🔒 Bloqueo por fecha (impide acceder desde el menú lateral)
+if datetime.now(TZ) < AVAILABLE_FROM:
+    st.info("Espera mi amor, ya falta poco, te amo mucho ❤️")
+    if st.button("⬅️ Volver a Contenido"):
+        try:
+            st.switch_page("pages/2_Contenido.py")
+        except Exception:
+            st.rerun()
+    st.stop()
+
 TZ = ZoneInfo("America/Guatemala")
 st.title("🧩 Rompecabezas")
 st.caption(f"Hora local: {datetime.now(TZ).strftime('%Y-%m-%d %H:%M:%S')}")
