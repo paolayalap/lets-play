@@ -13,7 +13,7 @@ if "authenticated" not in st.session_state or not st.session_state.authenticated
     except Exception: st.stop()
 
 if not st.session_state.get("cuadro2_solved", False):
-    st.error("Debes completar el Cuadro 2 (crucigrama) antes de entrar al juego de memoria.")
+    st.error("Debes completar el Juego 2 antes de entrar al Juego 3.")
     if st.button("⬅️ Ir al Cuadro 2"):
         try: st.switch_page("pages/4_Cuadro2.py")
         except Exception: st.rerun()
